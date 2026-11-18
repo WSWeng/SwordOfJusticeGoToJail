@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今晚也要坐牢</title>
+<meta name="description" content="逆水寒固定團：服刑時間表、請假、語音頻道、秒傷榜與團本攻略">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* 版面：左側牢房門牌導覽＋右側內容欄；主題 = 水泥牆、鐵欄杆、囚服橘 */
+:root{
+  --bg:#eceae6;          /* 水泥牆 */
+  --panel:#f8f7f4;
+  --ink:#1d1f22;
+  --muted:#62656b;
+  --line:#cfccc5;
+  --accent:#d9561d;      /* 囚服橘 */
+  --accent-ink:#ffffff;
+  --accent-soft:#f6dfd2;
+  --iron:#2b2e33;        /* 鐵欄杆 */
+  --ok:#2f7d4f;
+  --warn:#b7791f;
+  --font-display:"Noto Serif TC","Songti TC",serif;
+  --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --radius:10px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --panel:#1f2226; --ink:#ecebe8; --muted:#a3a6ac; --line:#34373d;
+    --accent:#f0743a; --accent-ink:#1a0d06; --accent-soft:#3b2418; --iron:#0e0f11;
+    --ok:#5cc489; --warn:#e3b04b; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181b; --panel:#1f2226; --ink:#ecebe8; --muted:#a3a6ac; --line:#34373d;
+  --accent:#f0743a; --accent-ink:#1a0d06; --accent-soft:#3b2418; --iron:#0e0f11;
+  --ok:#5cc489; --warn:#e3b04b; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.25;margin:0}
+h2{font-size:1.6rem}
+h3{font-size:1.15rem}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:6px;z-index:10}
+.skip:focus{left:8px}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+/* ---------- 外框 ---------- */
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100%}
+aside{background:var(--iron);color:#e9e7e3;position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 18px;display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand svg{flex:none}
+.brand b{font-family:var(--font-display);font-size:1.1rem;display:block;line-height:1.2}
+.brand small{color:#a7a9ad;font-size:.78rem}
+.search-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:#3a3e44;border:1px solid #4a4f56;color:#cfd0d2;border-radius:8px;padding:8px 10px;font:inherit;font-size:.88rem;cursor:pointer}
+.search-btn:hover{border-color:var(--accent)}
+.search-btn kbd{font-family:var(--font-mono);font-size:.72rem;background:#2b2e33;border-radius:4px;padding:1px 6px}
+nav h4{margin:0 0 6px;font-size:.72rem;letter-spacing:.12em;color:#8e9196;font-weight:500}
+nav ul{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:2px}
+nav a{display:flex;align-items:center;gap:10px;color:#dcdad6;text-decoration:none;padding:7px 10px;border-radius:6px;font-size:.94rem}
+nav a .cell{font-family:var(--font-mono);font-size:.7rem;color:#8e9196;width:28px}
+nav a:hover{background:#3a3e44}
+nav a.active{background:var(--accent);color:var(--accent-ink)}
+nav a.active .cell{color:inherit;opacity:.8}
+.aside-foot{margin-top:auto;font-size:.78rem;color:#8e9196}
+
+main{padding:28px clamp(16px,4vw,48px) 64px;max-width:1040px;width:100%;display:grid;gap:56px}
+section{display:grid;gap:18px}
+.sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.sec-head .cell{font-family:var(--font-mono);font-size:.8rem;color:var(--accent);font-weight:700}
+.sec-head p{color:var(--muted);font-size:.92rem;margin-left:auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:9px 16px;font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.pill{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.pill.idle{background:color-mix(in srgb,var(--muted) 16%,transparent);color:var(--muted)}
+.note{font-size:.82rem;color:var(--muted)}
+
+/* ---------- 首頁 Hero：牢房鐵欄 ---------- */
+.hero{position:relative;overflow:hidden;background:var(--iron);color:#f1efeb;border-radius:14px;padding:30px clamp(20px,4vw,40px);display:grid;gap:18px}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.06) 46px 52px);pointer-events:none}
+.hero > *{position:relative}
+.hero .eyebrow{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;color:#f0a37c}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900}
+.status{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 28px}
+.status .big{font-family:var(--font-display);font-size:1.3rem;font-weight:700}
+.countdown{display:flex;gap:10px}
+.countdown div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:6px 12px;text-align:center;min-width:64px}
+.countdown b{display:block;font-family:var(--font-mono);font-size:1.6rem;line-height:1.1;color:#fff}
+.countdown span{font-size:.72rem;color:#b9bbbf}
+.hero .actions{display:flex;gap:10px;flex-wrap:wrap}
+.hero .pill.idle{background:rgba(255,255,255,.12);color:#d4d5d8}
+.hero .btn.ghost{color:#f1efeb;border-color:rgba(255,255,255,.3)}
+
+/* 時間表 */
+.sched{display:grid;gap:10px}
+.sched-row{display:grid;grid-template-columns:72px 1fr auto;align-items:center;gap:14px}
+.day{font-family:var(--font-display);font-size:1.6rem;font-weight:900;line-height:1}
+.sched-card.today{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:4px}
+.week div{text-align:center;padding:8px 0;border-radius:6px;border:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+.week div.raid{background:var(--accent-soft);color:var(--accent);font-weight:700;border-color:transparent}
+.week div.now{outline:2px solid var(--ink);outline-offset:-2px}
+
+/* 表單 / 模板 */
+.form{display:grid;gap:12px}
+.field{display:grid;gap:4px}
+.field label{font-size:.85rem;font-weight:700}
+.field input,.field select{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row > .field{flex:1 1 160px;min-width:0}
+.field input,.field select{width:100%;min-width:0}
+pre.tpl{margin:0;font-family:var(--font-mono);font-size:.92rem;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:12px 14px;white-space:pre-wrap}
+.copy-ok{font-size:.85rem;color:var(--ok);min-height:1.2em}
+.leave-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.leave-list li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.leave-list li:last-child{border:0}
+
+/* 語音頻道 */
+.vc{display:flex;gap:14px;align-items:flex-start}
+.vc .hash{font-family:var(--font-mono);font-weight:700;color:var(--accent);font-size:1.3rem;line-height:1.3}
+.vc > div{display:grid;gap:6px;justify-items:start}
+
+/* 須知步驟 */
+.steps{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.steps li::before{content:"0" counter(s);font-family:var(--font-mono);font-weight:700;font-size:1.1rem;background:var(--ink);color:var(--bg);border-radius:8px;text-align:center;padding:6px 0}
+.steps b{display:block}
+
+/* 秒傷榜 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.tile .label{font-size:.82rem;color:var(--muted)}
+.tile .val{font-family:var(--font-mono);font-size:1.8rem;font-weight:700;line-height:1.2}
+.tile .sub{font-size:.8rem;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:.88rem;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.78rem;color:var(--muted);font-weight:500}
+th button{all:unset;cursor:pointer}
+th button:hover{color:var(--accent)}
+td.rank{font-family:var(--font-mono);font-weight:700;width:40px}
+td.bar{width:38%;min-width:140px}
+.barbox{height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+.barbox i{display:block;height:100%;background:var(--accent);border-radius:5px}
+tr.top td.rank{color:var(--accent)}
+.delta.up{color:var(--ok)}
+.delta.down{color:var(--muted)}
+
+/* 攻略 */
+details{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:0 18px}
+details + details{margin-top:10px}
+summary{cursor:pointer;padding:14px 0;display:flex;align-items:center;gap:12px;list-style:none;font-weight:700}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font-family:var(--font-mono);font-size:1.2rem;color:var(--muted)}
+details[open] summary::after{content:"−"}
+details .body{padding:0 0 16px;display:grid;gap:10px}
+details ul{margin:0;padding-left:1.2em}
+
+/* 資料庫 */
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.res a{display:grid;gap:4px;text-decoration:none;color:var(--ink)}
+.res a:hover{border-color:var(--accent)}
+.res a span{font-size:.82rem;color:var(--muted)}
+
+/* 搜尋對話框 */
+dialog{border:0;border-radius:12px;padding:0;width:min(560px,calc(100vw - 32px));background:var(--panel);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+#q{width:100%;font:inherit;font-size:1rem;padding:16px 18px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink)}
+#q:focus{outline:none}
+#results{list-style:none;margin:0;padding:8px;max-height:50vh;overflow:auto}
+#results a{display:block;padding:9px 12px;border-radius:8px;text-decoration:none;color:var(--ink)}
+#results a:hover,#results a.sel{background:var(--accent-soft)}
+#results small{color:var(--muted);margin-left:8px}
+
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);padding-top:18px;font-size:.85rem;color:var(--muted)}
+
+/* 手機版：導覽改為頂部橫列 */
+@media (max-width: 820px){
+  .shell{grid-template-columns:1fr}
+  aside{position:sticky;height:auto;flex-direction:row;align-items:center;padding:10px 16px;gap:12px;z-index:5;overflow:visible}
+  .brand small,.aside-foot,nav h4{display:none}
+  nav{display:none}
+  .search-btn{width:auto;margin-left:auto}
+  .search-btn kbd{display:none}
+  .mobile-nav{display:flex!important}
+  .sched-row{grid-template-columns:56px 1fr}
+  .sched-row > :last-child{grid-column:1/-1}
+}
+.mobile-nav{display:none;gap:6px;overflow-x:auto;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:56px;z-index:4}
+.mobile-nav a{flex:none;font-size:.85rem;padding:5px 12px;border-radius:999px;border:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.mobile-nav a.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">跳至內容</a>
+
+<script>
+/* =========================================================
+   團務設定：要改內容只需要改這一段
+   ========================================================= */
+const CONFIG = {
+  teamName: "我的固定團",            // ← 團名（佔位）
+  game: "逆水寒",
+  timezone: "台灣時間",
+  raidLengthHours: 3,                // 一場大概坐牢多久（用來判斷「服刑中」）
+  groups: [
+    // weekday: 0=週日, 1=週一 … 6=週六
+    { id:"mon", name:"周一團", weekday:1, time:"21:30", leader:"團長A（範例）", voice:"https://discord.com/" },
+    { id:"tue", name:"周二團", weekday:2, time:"21:30", leader:"團長B（範例）", voice:"https://discord.com/" }
+  ],
+  discord: {
+    invite: "https://discord.com/",   // ← Discord 邀請連結
+    lobby:  "https://discord.com/",   // 閒聊大廳
+    raid:   "https://discord.com/"    // 打本語音
+  },
+  // 本週請假名單（範例資料，請改成實際內容）
+  leaves: [
+    { date:"週一", name:"小明（範例）", group:"周一團", reason:"加班" },
+    { date:"週二", name:"阿呆（範例）", group:"周二團", reason:"出差" }
+  ],
+  // 秒傷榜：dps = 本週秒傷，last = 上週秒傷（範例資料）
+  dpsUpdated: "2026/11/17",
+  dps: [
+    { name:"燕雲刀客（範例）", job:"鐵衣",   group:"mon", dps:98200,  last:95100 },
+    { name:"素問小白（範例）", job:"素問",   group:"mon", dps:61400,  last:60200 },
+    { name:"碎夢無痕（範例）", job:"碎夢",   group:"mon", dps:182300, last:171900 },
+    { name:"神相一指（範例）", job:"神相",   group:"mon", dps:176800, last:178200 },
+    { name:"九靈喵喵（範例）", job:"九靈",   group:"mon", dps:169500, last:158800 },
+    { name:"血河老哥（範例）", job:"血河",   group:"tue", dps:121700, last:119300 },
+    { name:"龍吟一劍（範例）", job:"龍吟",   group:"tue", dps:188900, last:181000 },
+    { name:"玄機小智（範例）", job:"玄機",   group:"tue", dps:174200, last:174900 },
+    { name:"潮光阿浪（範例）", job:"潮光",   group:"tue", dps:163600, last:150400 },
+    { name:"素問二號（範例）", job:"素問",   group:"tue", dps:58800,  last:57600 }
+  ],
+  // 團本攻略（範例架構，請換成你們實際的機制說明）
+  guides: [
+    { boss:"一王（範例）", tag:"入門", points:["開場站位：坦克拉到場中，其餘人分散在外圈","讀條技能出現紅圈時往外跑，不要疊在一起","血量 50% 會轉階段，補師先開大"] },
+    { boss:"二王（範例）", tag:"機制", points:["點名的人把圈帶到場邊放","小怪出現優先集火","狂暴時間約 6 分鐘，輸出要跟上"] },
+    { boss:"尾王（範例）", tag:"滅團點", points:["全場 AOE 前 3 秒集合吃補","分攤傷害至少 4 人一起站","最後 10% 全開爆發"] }
+  ],
+  // 資料庫：雲端連結
+  resources: [
+    { title:"配裝參考表", desc:"各職業畢業配裝（範例）", url:"https://drive.google.com/" },
+    { title:"團本影片紀錄", desc:"每週打本錄影（範例）", url:"https://www.youtube.com/" },
+    { title:"機制圖解", desc:"站位圖與時間軸（範例）", url:"https://drive.google.com/" },
+    { title:"新人教學", desc:"入團前必看（範例）", url:"https://drive.google.com/" }
+  ]
+};
+</script>
+
+<div class="shell">
+  <aside>
+    <a class="brand" href="#overview" aria-label="回到團務總覽">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1" y="1" width="38" height="38" rx="9" fill="#d9561d"/>
+        <g stroke="#2b2e33" stroke-width="3.2" stroke-linecap="round"><path d="M12 9v22M20 9v22M28 9v22"/><path d="M8 13h24M8 27h24" stroke-width="2.4"/></g>
+      </svg>
+      <span><b id="brandName">今晚也要坐牢</b><small id="brandSub">逆水寒固定團</small></span>
+    </a>
+    <button class="search-btn" id="openSearch" type="button"><span>搜尋站內資訊</span><kbd>Ctrl K</kbd></button>
+    <nav aria-label="站內導覽">
+      <h4>團務</h4>
+      <ul>
+        <li><a href="#overview"><span class="cell">A-01</span>團務總覽</a></li>
+        <li><a href="#schedule"><span class="cell">A-02</span>服刑時間表</a></li>
+        <li><a href="#leave"><span class="cell">A-03</span>逃犯登記處</a></li>
+        <li><a href="#voice"><span class="cell">A-04</span>語音頻道</a></li>
+      </ul>
+      <h4>入團與回報</h4>
+      <ul>
+        <li><a href="#intro"><span class="cell">B-01</span>自我介紹</a></li>
+        <li><a href="#rules"><span class="cell">B-02</span>入獄須知</a></li>
+        <li><a href="#dps"><span class="cell">B-03</span>秒傷榜</a></li>
+        <li><a href="#guides"><span class="cell">B-04</span>團本攻略</a></li>
+        <li><a href="#library"><span class="cell">B-05</span>資料庫</a></li>
+      </ul>
+    </nav>
+    <div class="aside-foot" id="asideFoot"></div>
+  </aside>
+
+  <div>
+    <div class="mobile-nav" aria-label="站內導覽（手機）">
+      <a href="#overview">總覽</a><a href="#schedule">時間表</a><a href="#leave">請假</a><a href="#voice">語音</a>
+      <a href="#intro">自介</a><a href="#rules">須知</a><a href="#dps">秒傷榜</a><a href="#guides">攻略</a><a href="#library">資料庫</a>
+    </div>
+
+    <main>
+      <!-- 總覽 -->
+      <section id="overview" aria-labelledby="h-overview">
+        <div class="hero">
+          <div class="eyebrow" id="heroEyebrow">逆水寒固定團</div>
+          <h1 id="h-overview">今晚也要坐牢</h1>
+          <div class="status">
+            <div>
+              <div id="statusPill"></div>
+              <div class="big" id="statusText">計算刑期中…</div>
+            </div>
+            <div class="countdown" id="countdown" aria-live="polite"></div>
+          </div>
+          <div class="actions">
+            <a class="btn" id="heroVoice" href="#voice">進打本語音</a>
+            <a class="btn ghost" href="#leave">我要請假</a>
+            <a class="btn ghost" href="#schedule">看時間表</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 時間表 -->
+      <section id="schedule" aria-labelledby="h-schedule">
+        <div class="sec-head"><span class="cell">A-02</span><h2 id="h-schedule">服刑時間表</h2><p id="tzNote"></p></div>
+        <div class="sched" id="schedList"></div>
+        <div class="card">
+          <h3>本週刑期</h3>
+          <div class="week" id="week"></div>
+          <p class="note" style="margin-top:8px">橘色是開團日，黑框是今天。</p>
+        </div>
+      </section>
+
+      <!-- 請假 -->
+      <section id="leave" aria-labelledby="h-leave">
+        <div class="sec-head"><span class="cell">A-03</span><h2 id="h-leave">逃犯登記處</h2><p>不能來就填一下，複製後貼到 Discord</p></div>
+        <div class="grid2">
+          <div class="card form">
+            <div class="row">
+              <div class="field"><label for="lvName">遊戲 ID</label><input id="lvName" placeholder="你的角色名稱"></div>
+              <div class="field"><label for="lvGroup">團次</label><select id="lvGroup"></select></div>
+            </div>
+            <div class="row">
+              <div class="field"><label for="lvDate">日期</label><input id="lvDate" type="date"></div>
+              <div class="field"><label for="lvReason">請假原因</label><input id="lvReason" placeholder="例如：加班"></div>
+            </div>
+            <pre class="tpl" id="lvTpl"></pre>
+            <div class="row" style="align-items:center">
+              <button class="btn" type="button" data-copy="lvTpl">複製請假單</button>
+              <span class="copy-ok" id="lvTpl-ok"></span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>本週逃犯名單</h3>
+            <ul class="leave-list" id="leaveList"></ul>
+            <p class="note" style="margin-top:8px">名單由團長從 Discord 整理更新。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 語音 -->
+      <section id="voice" aria-labelledby="h-voice">
+        <div class="sec-head"><span class="cell">A-04</span><h2 id="h-voice">語音頻道</h2></div>
+        <div class="grid2">
+          <div class="card vc"><span class="hash">#</span><div><h3>閒聊大廳</h3><p>平時聊天、揪團都在這裡。</p><a class="btn ghost" id="vcLobby" href="#">開啟 Discord</a></div></div>
+          <div class="card vc"><span class="hash">#</span><div><h3>打本語音</h3><p id="vcRaidText">開團日 21:30 在這裡集合。</p><a class="btn" id="vcRaid" href="#">進打本語音</a></div></div>
+        </div>
+      </section>
+
+      <!-- 自我介紹 -->
+      <section id="intro" aria-labelledby="h-intro">
+        <div class="sec-head"><span class="cell">B-01</span><h2 id="h-intro">自我介紹</h2><p>新人入獄先報到</p></div>
+        <div class="card form">
+          <div class="row">
+            <div class="field"><label for="inName">遊戲 ID／暱稱</label><input id="inName" placeholder="角色名稱／怎麼叫你"></div>
+            <div class="field"><label for="inGroup">團次</label><select id="inGroup"></select></div>
+            <div class="field"><label for="inJob">職業／定位</label><input id="inJob" placeholder="例如：碎夢／輸出"></div>
+          </div>
+          <pre class="tpl" id="inTpl"></pre>
+          <div class="row" style="align-items:center">
+            <button class="btn" type="button" data-copy="inTpl">複製自我介紹</button>
+            <span class="copy-ok" id="inTpl-ok"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 須知 -->
+      <section id="rules" aria-labelledby="h-rules">
+        <div class="sec-head"><span class="cell">B-02</span><h2 id="h-rules">入獄須知</h2><p>三步完成報到</p></div>
+        <div class="card">
+          <ol class="steps">
+            <li><div><b>先自我介紹</b>用上面的模板貼到 Discord，讓大家認識你。</div></li>
+            <li><div><b>確認團次，準時集合</b><span id="ruleTime">開團日 21:30 進打本語音。</span></div></li>
+            <li><div><b>不能來就登記</b>到逃犯登記處填請假單，越早說越好，團長才能補人。</div></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 秒傷榜 -->
+      <section id="dps" aria-labelledby="h-dps">
+        <div class="sec-head"><span class="cell">B-03</span><h2 id="h-dps">秒傷榜</h2><p id="dpsUpdated"></p></div>
+        <div class="tiles" id="dpsTiles"></div>
+        <div class="card" style="display:grid;gap:12px">
+          <div class="tabs" role="tablist" id="dpsTabs"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th><th>角色</th><th>職業</th><th>團次</th>
+                <th><button type="button" data-sort="dps">本週秒傷 ▾</button></th>
+                <th>比例</th>
+                <th><button type="button" data-sort="delta">較上週</button></th>
+              </tr></thead>
+              <tbody id="dpsBody"></tbody>
+            </table>
+          </div>
+          <p class="note">補師與坦克的秒傷本來就比較低，排名只供參考，大家一起進步最重要。</p>
+        </div>
+      </section>
+
+      <!-- 攻略 -->
+      <section id="guides" aria-labelledby="h-guides">
+        <div class="sec-head"><span class="cell">B-04</span><h2 id="h-guides">團本攻略</h2><p>打本前先複習</p></div>
+        <div id="guideList"></div>
+      </section>
+
+      <!-- 資料庫 -->
+      <section id="library" aria-labelledby="h-library">
+        <div class="sec-head"><span class="cell">B-05</span><h2 id="h-library">資料庫</h2><p>共用雲端資源</p></div>
+        <div class="res" id="resList"></div>
+      </section>
+
+      <footer>
+        <span id="footName"></span>
+        <a href="#overview">回到頂端</a>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<dialog id="searchDlg" aria-label="搜尋站內資訊">
+  <input id="q" type="search" placeholder="搜尋：請假、語音、秒傷、攻略…" autocomplete="off">
+  <ul id="results"></ul>
+</dialog>
+
+<script>
+(function(){
+  const C = CONFIG;
+  const $ = id => document.getElementById(id);
+  const WD = ["週日","週一","週二","週三","週四","週五","週六"];
+  const fmt = n => n.toLocaleString("zh-TW");
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  /* 台灣時間：回傳一個「本地欄位 = 台北時間」的 Date */
+  function taipeiNow(){ const d = new Date(); return new Date(d.getTime() + (480 + d.getTimezoneOffset()) * 60000); }
+  function raidStart(base, g){ const [h,m] = g.time.split(":").map(Number); const d = new Date(base); d.setHours(h,m,0,0); return d; }
+
+  /* 找出目前服刑中、或下一場的團 */
+  function nextRaid(now){
+    const lenMs = C.raidLengthHours * 3600e3;
+    let best = null;
+    for (let i = -1; i <= 7; i++){
+      const day = new Date(now); day.setDate(now.getDate() + i);
+      for (const g of C.groups){
+        if (day.getDay() !== g.weekday) continue;
+        const s = raidStart(day, g);
+        if (now >= s && now < s.getTime() + lenMs) return { g, start:s, live:true };
+        if (s > now && (!best || s < best.start)) best = { g, start:s, live:false };
+      }
+    }
+    return best;
+  }
+
+  /* ---------- 靜態填入 ---------- */
+  document.title = "今晚也要坐牢｜" + C.teamName;
+  $("brandSub").textContent = C.game + "・" + C.teamName;
+  $("heroEyebrow").textContent = C.game.toUpperCase() + "　/　" + C.teamName;
+  $("asideFoot").textContent = C.teamName + "・" + C.groups.map(g => g.name).join("／");
+  $("footName").textContent = "今晚也要坐牢｜" + C.game + " " + C.teamName;
+  $("tzNote").textContent = "全部為" + C.timezone;
+  const raidDays = C.groups.map(g => WD[g.weekday] + " " + g.time).join("、");
+  $("vcRaidText").textContent = raidDays + " 在這裡集合。";
+  $("ruleTime").textContent = "依你的團次（" + raidDays + "）準時進打本語音。";
+  $("vcLobby").href = C.discord.lobby; $("vcRaid").href = C.discord.raid;
+
+  const today = taipeiNow();
+  $("schedList").innerHTML = C.groups.map(g => `
+    <div class="card sched-card${today.getDay()===g.weekday?" today":""}">
+      <div class="sched-row">
+        <div class="day">${WD[g.weekday].slice(1)}</div>
+        <div><h3>${esc(g.name)}</h3><p class="note">${WD[g.weekday]} <span class="num">${g.time}</span> 集合・帶隊：${esc(g.leader)}</p></div>
+        <div class="row">${today.getDay()===g.weekday?'<span class="pill">今晚</span>':""}<a class="btn ghost" href="${esc(g.voice)}">語音連結</a></div>
+      </div>
+    </div>`).join("");
+
+  const order = [1,2,3,4,5,6,0];
+  $("week").innerHTML = order.map(d => {
+    const g = C.groups.find(x => x.weekday === d);
+    return `<div class="${g?"raid":""} ${d===today.getDay()?"now":""}">${WD[d].slice(1)}${g?`<br><span class="num" style="font-size:.75rem">${g.time}</span>`:"<br>放風"}</div>`;
+  }).join("");
+
+  /* ---------- 倒數 ---------- */
+  function tick(){
+    const now = taipeiNow(), r = nextRaid(now);
+    if (!r){ $("statusText").textContent = "尚未設定團次"; return; }
+    if (r.live){
+      $("statusPill").innerHTML = '<span class="pill ok">服刑中</span>';
+      $("statusText").textContent = `${r.g.name} 正在坐牢，${r.g.time} 開打`;
+      $("countdown").innerHTML = "";
+      $("heroVoice").href = r.g.voice; return;
+    }
+    const sameDay = r.start.toDateString() === now.toDateString();
+    $("statusPill").innerHTML = sameDay ? '<span class="pill">今晚有團</span>' : '<span class="pill idle">今天放風</span>';
+    $("statusText").textContent = sameDay
+      ? `今晚 ${r.g.time} ${r.g.name}開庭`
+      : `下次服刑：${WD[r.start.getDay()]} ${r.g.time} ${r.g.name}`;
+    $("heroVoice").href = r.g.voice;
+    let s = Math.floor((r.start - now) / 1000);
+    const d = Math.floor(s/86400); s%=86400; const h = Math.floor(s/3600); s%=3600; const m = Math.floor(s/60); s%=60;
+    const parts = (d ? [[d,"天"]] : []).concat([[h,"時"],[m,"分"],[s,"秒"]]);
+    $("countdown").innerHTML = parts.map(([v,u]) => `<div><b>${String(v).padStart(2,"0")}</b><span>${u}</span></div>`).join("");
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- 請假單 / 自介 ---------- */
+  const groupOpts = C.groups.map(g => `<option value="${esc(g.name)}">${esc(g.name)}</option>`).join("");
+  $("lvGroup").innerHTML = groupOpts; $("inGroup").innerHTML = groupOpts;
+  const nr = nextRaid(taipeiNow());
+  if (nr){
+    const sd = nr.start; $("lvDate").value = `${sd.getFullYear()}-${String(sd.getMonth()+1).padStart(2,"0")}-${String(sd.getDate()).padStart(2,"0")}`;
+    $("lvGroup").value = nr.g.name;
+  }
+  function renderLeave(){
+    const v = $("lvDate").value; let dateTxt = "";
+    if (v){ const [y,m,d] = v.split("-").map(Number); const dt = new Date(y,m-1,d); dateTxt = `${m}/${d}（${WD[dt.getDay()].slice(1)}）`; }
+    $("lvTpl").textContent = `【逃犯登記】\n角色：${$("lvName").value || "＿＿＿"}\n團次：${$("lvGroup").value}\n日期：${dateTxt || "＿＿＿"}\n請假：${$("lvReason").value || "＿＿＿"}`;
+  }
+  function renderIntro(){
+    $("inTpl").textContent = `【新人報到】\n遊戲 ID／暱稱：${$("inName").value || "＿＿＿"}\n團次：${$("inGroup").value}\n職業／定位：${$("inJob").value || "＿＿＿"}`;
+  }
+  ["lvName","lvGroup","lvDate","lvReason"].forEach(id => $(id).addEventListener("input", renderLeave));
+  ["inName","inGroup","inJob"].forEach(id => $(id).addEventListener("input", renderIntro));
+  renderLeave(); renderIntro();
+
+  document.querySelectorAll("[data-copy]").forEach(btn => btn.addEventListener("click", async () => {
+    const id = btn.dataset.copy, ok = $(id + "-ok"), txt = $(id).textContent;
+    try { await navigator.clipboard.writeText(txt); ok.style.color = ""; ok.textContent = "已複製，去 Discord 貼上吧"; }
+    catch(e){
+      const r = document.createRange(); r.selectNodeContents($(id)); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      ok.style.color = "var(--warn)"; ok.textContent = "瀏覽器不讓自動複製，文字已選取，請按 Ctrl+C";
+    }
+    setTimeout(() => ok.textContent = "", 4000);
+  }));
+
+  $("leaveList").innerHTML = C.leaves.length
+    ? C.leaves.map(l => `<li><span><b>${esc(l.name)}</b>　<span class="note">${esc(l.group)}・${esc(l.date)}</span></span><span class="note">${esc(l.reason)}</span></li>`).join("")
+    : '<li><span class="note">本週全員到齊，沒有逃犯</span></li>';
+
+  /* ---------- 秒傷榜 ---------- */
+  $("dpsUpdated").textContent = "更新：" + C.dpsUpdated;
+  const gName = id => (C.groups.find(g => g.id === id) || {}).name || id;
+  const avg = arr => arr.length ? Math.round(arr.reduce((a,b) => a + b.dps, 0) / arr.length) : 0;
+  const avgLast = arr => arr.length ? Math.round(arr.reduce((a,b) => a + b.last, 0) / arr.length) : 0;
+  const tiles = C.groups.map(g => { const a = C.dps.filter(p => p.group === g.id); return { label:g.name + "平均", v:avg(a), l:avgLast(a), n:a.length }; });
+  const mostImproved = C.dps.slice().sort((a,b) => (b.dps/b.last) - (a.dps/a.last))[0];
+  $("dpsTiles").innerHTML = tiles.map(t => {
+    const p = t.l ? ((t.v - t.l) / t.l * 100) : 0;
+    return `<div class="card tile"><div class="label">${esc(t.label)}</div><div class="val">${fmt(t.v)}</div><div class="sub">${t.n} 人・較上週 <span class="delta ${p>=0?"up":"down"}">${p>=0?"+":""}${p.toFixed(1)}%</span></div></div>`;
+  }).join("") + (mostImproved ? `<div class="card tile"><div class="label">本週進步王</div><div class="val" style="font-family:var(--font-display);font-size:1.3rem">${esc(mostImproved.name)}</div><div class="sub">${esc(mostImproved.job)}・<span class="delta up">+${((mostImproved.dps/mostImproved.last-1)*100).toFixed(1)}%</span></div></div>` : "");
+
+  let tab = "all", sortKey = "dps";
+  const tabDefs = [{ id:"all", name:"全部" }].concat(C.groups.map(g => ({ id:g.id, name:g.name })));
+  $("dpsTabs").innerHTML = tabDefs.map(t => `<button type="button" role="tab" data-tab="${t.id}" aria-selected="${t.id===tab}">${esc(t.name)}</button>`).join("");
+  $("dpsTabs").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; tab = b.dataset.tab; $("dpsTabs").querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", x === b)); renderDps(); });
+  document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click", () => {
+    sortKey = b.dataset.sort;
+    document.querySelectorAll("[data-sort]").forEach(x => x.textContent = x.textContent.replace(" ▾",""));
+    b.textContent += " ▾"; renderDps();
+  }));
+  function renderDps(){
+    const rows = C.dps.filter(p => tab === "all" || p.group === tab).map(p => ({ ...p, delta: p.last ? (p.dps - p.last) / p.last : 0 }));
+    rows.sort((a,b) => b[sortKey] - a[sortKey]);
+    const max = Math.max(...rows.map(r => r.dps), 1);
+    $("dpsBody").innerHTML = rows.map((r,i) => `
+      <tr class="${i<3?"top":""}">
+        <td class="rank">${i+1}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.job)}</td><td>${esc(gName(r.group))}</td>
+        <td class="num">${fmt(r.dps)}</td>
+        <td class="bar"><div class="barbox"><i style="width:${(r.dps/max*100).toFixed(1)}%"></i></div></td>
+        <td class="num delta ${r.delta>=0?"up":"down"}">${r.delta>=0?"+":""}${(r.delta*100).toFixed(1)}%</td>
+      </tr>`).join("");
+  }
+  renderDps();
+
+  /* ---------- 攻略 / 資料庫 ---------- */
+  $("guideList").innerHTML = C.guides.map((g,i) => `
+    <details${i===0?" open":""}><summary><span class="pill">${esc(g.tag)}</span>${esc(g.boss)}</summary>
+      <div class="body"><ul>${g.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></details>`).join("");
+  $("resList").innerHTML = C.resources.map(r => `<a class="card" href="${esc(r.url)}"><b>${esc(r.title)} ↗</b><span>${esc(r.desc)}</span></a>`).join("");
+
+  /* ---------- 導覽高亮 ---------- */
+  const navLinks = [...document.querySelectorAll("nav a, .mobile-nav a")];
+  const secs = [...document.querySelectorAll("main section")];
+  function setActive(id){ navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id)); }
+  const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }); }, { rootMargin:"-40% 0px -55% 0px" });
+  secs.forEach(s => io.observe(s)); setActive(location.hash.slice(1) || "overview");
+
+  /* ---------- 搜尋（Ctrl K） ---------- */
+  const index = [
+    { id:"overview", t:"團務總覽", k:"今晚 倒數 開團 首頁" },
+    { id:"schedule", t:"服刑時間表", k:"時間 集合 週一 週二 21:30 團次" },
+    { id:"leave", t:"逃犯登記處", k:"請假 不能來 缺席 登記" },
+    { id:"voice", t:"語音頻道", k:"discord 語音 閒聊 打本" },
+    { id:"intro", t:"自我介紹", k:"新人 報到 自介 職業" },
+    { id:"rules", t:"入獄須知", k:"規則 新人 須知 入團" },
+    { id:"dps", t:"秒傷榜", k:"秒傷 dps 輸出 排名 進步" },
+    { id:"guides", t:"團本攻略", k:"攻略 boss 機制 王 站位 " + C.guides.map(g => g.boss).join(" ") },
+    { id:"library", t:"資料庫", k:"雲端 配裝 影片 資源 " + C.resources.map(r => r.title).join(" ") }
+  ];
+  const dlg = $("searchDlg"), q = $("q"), res = $("results"); let sel = 0, hits = [];
+  function renderHits(){
+    const v = q.value.trim().toLowerCase();
+    hits = index.filter(x => !v || (x.t + " " + x.k).toLowerCase().includes(v));
+    sel = 0;
+    res.innerHTML = hits.length ? hits.map((h,i) => `<li><a href="#${h.id}" class="${i===0?"sel":""}">${h.t}<small>${h.k.split(" ").slice(0,3).join("・")}</small></a></li>`).join("") : '<li class="note" style="padding:10px 12px">找不到，換個關鍵字試試</li>';
+  }
+  function openSearch(){ q.value = ""; renderHits(); dlg.showModal(); q.focus(); }
+  $("openSearch").addEventListener("click", openSearch);
+  document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){ e.preventDefault(); openSearch(); } });
+  q.addEventListener("input", renderHits);
+  q.addEventListener("keydown", e => {
+    const links = res.querySelectorAll("a"); if (!links.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); sel = (sel + (e.key === "ArrowDown" ? 1 : -1) + links.length) % links.length; links.forEach((a,i) => a.classList.toggle("sel", i === sel)); }
+    if (e.key === "Enter"){ e.preventDefault(); links[sel].click(); }
+  });
+  res.addEventListener("click", e => { if (e.target.closest("a")) dlg.close(); });
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+})();
+</script>
+</body>
+</html>
